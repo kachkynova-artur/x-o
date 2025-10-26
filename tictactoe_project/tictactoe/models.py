@@ -8,3 +8,12 @@ class Game(models.Model):
 
     def __str__(self):
         return f"{self.player_x} vs {self.player_o}"
+
+class GameMove(models.Model):
+    game = models.ForeignKey(Game, on_delete=models.CASCADE, related_name='moves')
+    position = models.IntegerField()  # 0-8
+    player = models.CharField(max_length=1, choices=[('X','X'),('O','O')])
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('game', 'position')  # одна клетка только один раз
